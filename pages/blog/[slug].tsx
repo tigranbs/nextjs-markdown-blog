@@ -4,6 +4,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import {marked} from 'marked';
 import styles from "../../styles/Home.module.css";
+import { getPosts } from "../../lib/posts";
 
 const BlogPost = (props: {
     frontMatter: { [key: string]: string },
@@ -21,11 +22,9 @@ const BlogPost = (props: {
 export default BlogPost;
 
 export async function getStaticPaths() {
-    const files = fs.readdirSync(path.join('posts'))
-
-    const paths = files.filter(filename => filename.includes(".md")).map((filename) => ({
+    const paths = getPosts().map(({slug}) => ({
         params: {
-            slug: filename.replace('.md', ''),
+            slug,
         },
     }))
 
