@@ -28,3 +28,22 @@ export function getPosts(): Post[] {
     new Date(b.frontMatter.date).getTime() - new Date(a.frontMatter.date).getTime()
   ));
 }
+
+export function getPostBySlug(slug: string): {
+  slug: string;
+  frontMatter: { [key: string]: string };
+  content: string;
+} {
+  const markdownWithMeta = fs.readFileSync(
+    path.join('posts', slug + '.md'),
+    'utf-8'
+  )
+
+  const { data: frontMatter, content } = matter(markdownWithMeta)
+
+  return {
+    slug,
+    frontMatter,
+    content,
+  }
+}

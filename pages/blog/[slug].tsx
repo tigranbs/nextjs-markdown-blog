@@ -1,10 +1,7 @@
 import React from "react";
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
 import {marked} from 'marked';
 import styles from "../../styles/Home.module.css";
-import { getPosts } from "../../lib/posts";
+import { getPosts, getPostBySlug } from "../../lib/posts";
 
 const BlogPost = (props: {
     frontMatter: { [key: string]: string },
@@ -36,12 +33,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
     const { slug } = params;
-    const markdownWithMeta = fs.readFileSync(
-        path.join('posts', slug + '.md'),
-        'utf-8'
-    )
-
-    const {data: frontMatter, content} = matter(markdownWithMeta)
+    const { frontMatter, content } = getPostBySlug(slug)
 
     return {
         props: {
