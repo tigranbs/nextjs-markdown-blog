@@ -1,7 +1,7 @@
 import React from "react";
 import fs from 'fs';
 import path from 'path';
-import matter, {} from 'gray-matter';
+import matter from 'gray-matter';
 import {marked} from 'marked';
 import styles from "../../styles/Home.module.css";
 
@@ -35,7 +35,8 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps({params: {slug}}: never) {
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+    const { slug } = params;
     const markdownWithMeta = fs.readFileSync(
         path.join('posts', slug + '.md'),
         'utf-8'
