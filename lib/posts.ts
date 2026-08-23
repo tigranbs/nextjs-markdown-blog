@@ -7,6 +7,21 @@ export type Post = {
   frontMatter: { [key: string]: string };
 };
 
+export function getPost(slug: string): Post & { content: string } {
+  const markdownWithMeta = fs.readFileSync(
+    path.join('posts', slug + '.md'),
+    'utf-8'
+  )
+
+  const { data: frontMatter, content } = matter(markdownWithMeta)
+
+  return {
+    slug,
+    frontMatter,
+    content,
+  }
+}
+
 export function getPosts(): Post[] {
   const files = fs.readdirSync(path.join('posts'))
 
