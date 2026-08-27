@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from "react";
 import {marked} from 'marked';
 import styles from "../../styles/Home.module.css";
@@ -10,7 +11,7 @@ const BlogPost = (props: {
 }) => (
     <div className={styles.container}>
         <div className='prose prose-sm sm:prose lg:prose-lg mx-auto prose-slate'>
-            <img src={props.frontMatter.thumbnail} alt={props.frontMatter.title} />
+            <Image src={props.frontMatter.thumbnail} alt={props.frontMatter.title} width={807} height={166} />
             <div dangerouslySetInnerHTML={{__html: marked(props.content)}}/>
         </div>
     </div>
