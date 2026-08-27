@@ -7,13 +7,17 @@ export type Post = {
   frontMatter: { [key: string]: string };
 };
 
-export function getPost(slug: string): Post & { content: string } {
+function readPostFile(filename: string) {
   const markdownWithMeta = fs.readFileSync(
-    path.join('posts', slug + '.md'),
+    path.join('posts', filename),
     'utf-8'
   )
 
-  const { data: frontMatter, content } = matter(markdownWithMeta)
+  return matter(markdownWithMeta)
+}
+
+export function getPost(slug: string): Post & { content: string } {
+  const { data: frontMatter, content } = readPostFile(slug + '.md')
 
   return {
     slug,
@@ -28,12 +32,7 @@ export function getPosts(): Post[] {
   return files.filter(filename => filename.includes(".md")).map((filename) => {
     const slug = filename.replace('.md', '')
 
-    const markdownWithMeta = fs.readFileSync(
-      path.join('posts', filename),
-      'utf-8'
-    )
-
-    const {data: frontMatter} = matter(markdownWithMeta)
+    const {data: frontMatter} = readPostFile(filename)
 
     return {
       slug,
