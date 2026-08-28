@@ -7,7 +7,7 @@ export type Post = {
   frontMatter: { [key: string]: string };
 };
 
-function readPostFile(filename: string) {
+function readPostFile(filename: string): ReturnType<typeof matter> {
   const markdownWithMeta = fs.readFileSync(
     path.join('posts', filename),
     'utf-8'
@@ -29,7 +29,7 @@ export function getPost(slug: string): Post & { content: string } {
 export function getPosts(): Post[] {
   const files = fs.readdirSync(path.join('posts'))
 
-  return files.filter(filename => filename.includes(".md")).map((filename) => {
+  return files.filter(filename => filename.endsWith('.md')).map((filename) => {
     const slug = filename.replace('.md', '')
 
     const {data: frontMatter} = readPostFile(filename)
